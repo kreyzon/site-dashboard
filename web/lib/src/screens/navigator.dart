@@ -78,7 +78,7 @@ class _DashboardNavigatorState extends State<DashboardNavigator> {
               onSignIn: (credentials) async {
                 var signedIn = await authState.signIn(
                     credentials.username, credentials.password);
-                if (signedIn) {
+                if (signedIn.logged) {
                   routeState.go('/posts/popular');
                 }
               },
