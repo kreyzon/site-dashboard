@@ -10,5 +10,16 @@ class Portfolio {
   final String imageUrl;
   final String imageAlt;
 
-  Portfolio(this.id, this.title, this.summary, this.url, this.imageUrl, this.imageAlt);
+  Portfolio({required this.id, required this.title, required this.summary, required this.url, required this.imageUrl, required this.imageAlt});
+  
+  factory Portfolio.fromJson(Map<String, dynamic> json) {
+    return Portfolio(
+      id: json['Id'],
+      title: json['Title'],
+      summary: json['Summary'],
+      url: json['Url'],
+      imageUrl: json['ImageUrl'],
+      imageAlt: json['ImageAlt'],
+    );
+  }
 }
