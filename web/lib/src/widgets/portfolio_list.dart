@@ -24,7 +24,7 @@ class PortfolioList extends StatelessWidget {
             portfolios[index].title,
           ),
           subtitle: Text(
-            portfolios[index].summary,
+            portfolios[index].url,
           ),
           onTap: onTap != null ? () => onTap!(portfolios[index]) : null,
         ),
