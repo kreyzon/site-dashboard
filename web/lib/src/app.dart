@@ -79,6 +79,7 @@ class _DashboardState extends State<Dashboard> {
       );
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
+    _auth.checkToken();
     final signedIn = _auth.signedIn;
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
 

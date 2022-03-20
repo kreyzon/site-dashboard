@@ -5,13 +5,13 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:web/src/api.dart';
 
 class SignIn {
   bool logged = false;
-  String token = "";
 }
+final FlutterSecureStorage storage = new FlutterSecureStorage();
 
 /// A mock authentication service
 class DashboardAuth extends ChangeNotifier {
@@ -19,10 +19,29 @@ class DashboardAuth extends ChangeNotifier {
 
   bool get signedIn => data.logged;
 
+  Future<void> checkToken() async {
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    try {
+    String? token = await storage.read(key: "jwt");
+    final response = await new ApiHandler().post(
+          "/auth/me",
+          {},
+          token: token!);
+      if (response != "") {
+        data.logged = true;
+      }
+    } catch (e) {
+      await storage.delete(key: "jwt");
+      data.logged = false;
+    }
+    notifyListeners();
+  }
+
   Future<void> signOut() async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
     // Sign out.
     data.logged = false;
+    await storage.delete(key: "jwt");
     notifyListeners();
   }
 
@@ -38,7 +57,7 @@ class DashboardAuth extends ChangeNotifier {
           });
       Map<String, dynamic> body = jsonDecode(response);
       data.logged = true;
-      data.token = body['token'];
+      await storage.write(key: "jwt", value: body['token']);
       notifyListeners();
       return data;
     } catch (e) {
