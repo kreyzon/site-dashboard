@@ -4,6 +4,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:web/src/screens/new_portfolio.dart';
 
 import '../auth.dart';
 import '../data.dart';
@@ -31,6 +32,7 @@ class DashboardNavigator extends StatefulWidget {
 class _DashboardNavigatorState extends State<DashboardNavigator> {
   final _signInKey = const ValueKey('Sign in');
   final _scaffoldKey = const ValueKey('App scaffold');
+  final _newPortfolioKey = const ValueKey('New portfolio screen');
   final _portfolioDetailsKey = const ValueKey('Portfolio details screen');
   final _postDetailsKey = const ValueKey('Post details screen');
 
@@ -39,7 +41,10 @@ class _DashboardNavigatorState extends State<DashboardNavigator> {
     final routeState = RouteStateScope.of(context);
     final authState = DashboardAuthScope.of(context);
     final pathTemplate = routeState.route.pathTemplate;
-
+    bool isNewPortfolio = false;
+    if (pathTemplate == '/portfolios/new'){
+      isNewPortfolio = true;
+    }
     Portfolio? selectedPortfolio;
     if (pathTemplate == '/portfolio/:portfolioId') {
       selectedPortfolio = blogInstance.allPortfolios.firstWhereOrNull(
@@ -92,7 +97,12 @@ class _DashboardNavigatorState extends State<DashboardNavigator> {
           ),
           // Add an additional page to the stack if the user is viewing a portfolio
           // or an post
-          if (selectedPortfolio != null)
+          if (isNewPortfolio)
+            MaterialPage<void>(
+              key: _newPortfolioKey,
+              child: PortfolioNewScreen(),
+            )
+          else if (selectedPortfolio != null)
             MaterialPage<void>(
               key: _portfolioDetailsKey,
               child: PortfolioDetailsScreen(

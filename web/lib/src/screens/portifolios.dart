@@ -38,6 +38,18 @@ class _PortfoliosScreen extends State<PortfoliosScreen> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(title),
+          actions: [
+          IconButton(
+            onPressed: () {
+              RouteStateScope.of(context).go('/portfolios/new');
+            },
+            icon: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 30.0,
+            ),
+          ),
+          ],
         ),
         body:  FutureBuilder<List<Portfolio>>(
             future: futurePortfolios,

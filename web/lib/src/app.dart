@@ -26,6 +26,7 @@ class _DashboardState extends State<Dashboard> {
       allowedPaths: [
         '/signin',
         '/portfolios',
+        '/portfolios/new',
         '/settings',
         '/posts/new',
         '/posts/all',
